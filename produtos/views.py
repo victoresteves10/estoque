@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from setup import urls
 from django.urls import reverse
 from django.contrib.auth.models import User
@@ -26,10 +26,38 @@ def produtos(request):
 @login_required
 def atualiza(request, id):
     if request.method == "POST":
+        # Obtendo os parâmetros do POST
         parametro = request.POST.get('atualizar')
-        produto = Produto.objects.filter(id=id)
-        produto.update(situacao=parametro)
+        retirada = request.POST.get('retirada')
+
+        # Convertendo retirada para inteiro
+        try:
+            retirada = int(retirada)
+        except ValueError:
+            messages.add_message(request, constants.ERROR,
+                                 'Quantidade de retirada inválida')
+            return redirect(reverse('produtos'))
+
+        # Obtendo a instância do produto
+        produto = get_object_or_404(Produto, id=id)
+
+        # Atualizando a situação
+        produto.situacao = parametro
+
+        # Realizando a subtração
+        produto.aberto = produto.aberto - retirada
+
+        # Salvando a instância atualizada no banco de dados
+        produto.save()
+
+        # Adicionando mensagem de sucesso
         messages.add_message(request, constants.SUCCESS,
                              'Produto atualizado com sucesso')
 
+        return redirect(reverse('produtos'))
+
+    else:
+        # Lidar com outros métodos HTTP, se necessário
+        messages.add_message(request, constants.ERROR,
+                             'Método não permitido')
         return redirect(reverse('produtos'))

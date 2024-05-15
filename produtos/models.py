@@ -4,12 +4,8 @@ from django.contrib.auth.models import User
 
 
 class Produto(models.Model):
-    guardado = (
-        ("aberto", "aberto"),
-        ("estoque", "estoque")
-    )
     quantidade = (
-        ("Acabando", "Acambando"), ("Acabou", "Acabou"), ("Cheio", "Cheio")
+        ("Acabando", "Acabando"), ("Acabou", "Acabou"), ("Cheio", "Cheio")
     )
     nome = models.CharField(max_length=200)
     numero = models.IntegerField()
@@ -17,8 +13,8 @@ class Produto(models.Model):
     descricao = models.TextField()
     validade = models.DateField()
     marca = models.CharField(max_length=200)
-    armazenamento = models.CharField(
-        max_length=10, choices=guardado, blank=False, null=False)
+    aberto = models.IntegerField()
+    fechado = models.IntegerField()
     situacao = models.CharField(
         max_length=20, choices=quantidade, blank=False, null=False)
 

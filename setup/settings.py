@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from dotenv import load_dotenv
 from pathlib import Path
 import os
-from django.contrib.messages import constants
+from django.contrib.messages import constants as message_constants
 
 load_dotenv()
 
@@ -27,9 +27,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = str(os.getenv('SECRET_KEY'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['yourusername.pythonanywhere.com']
 
 
 # Application definition
@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'usuarios',
     'produtos',
-    
+
 ]
 
 MIDDLEWARE = [
@@ -132,9 +132,9 @@ STATIC_ROOT = os.path.join('static')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MESSAGE_TAGS = {
-    constants.DEBUG: 'alert-primary',
-    constants.ERROR: 'alert-danger',
-    constants.WARNING: 'alert-warning',
-    constants.SUCCESS: 'alert-success',
-    constants.INFO: 'alert-info ',
+    message_constants.DEBUG: 'debug',
+    message_constants.INFO: 'info',
+    message_constants.SUCCESS: 'success',
+    message_constants.WARNING: 'warning',
+    message_constants.ERROR: 'error',
 }
